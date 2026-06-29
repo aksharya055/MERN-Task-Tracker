@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // This links your frontend to your backend
-const API_URL = 'http://localhost:5000/api/tasks';
+const API_URL = 'https://mern-task-tracker-mx55.onrender.com/api/tasks';
 
 export default {
   getTasks: (params) => axios.get(API_URL, { params }),
