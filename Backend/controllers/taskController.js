@@ -1,19 +1,26 @@
 const Task = require('../models/Task');
 
-// Get all tasks
+// Get all tasks for the logged-in user
 const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find().sort({ createdAt: -1 });
+    const tasks = await Task.find({ user: req.user._id }).sort({ createdAt: -1 });
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Create a new task
+// Create a task
 const createTask = async (req, res) => {
   try {
-    const task = await Task.create(req.body);
+    const { title, description, priority, dueDate } = req.body;
+    const task = await Task.create({
+      user: req.user._id,
+      title,
+      description,
+      priority,
+      dueDate
+    });
     res.status(201).json(task);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -40,4 +47,5 @@ const deleteTask = async (req, res) => {
   }
 };
 
+// CRUCIAL: Make sure these names match the ones in taskRoutes.js
 module.exports = { getTasks, createTask, updateTask, deleteTask };
